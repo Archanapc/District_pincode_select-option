@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/zh-TW.min.js" integrity="sha512-whWyZS4LtoXu4LzFJbHIgL9Cr7Sf2+KyeEAGumtXN+8U234v1R89monfd9PLYnC0TNBArmPnkFOVo8ShuMpZaw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script>
+  $(document).ready(function()
+  {
+     var $select1=$('#select1'),
+         $select2=$('#select2'),
+         $options=$select2.find('option');
+         $select1.on('change',function()
+         {
+           $select2.html($options.filter('[value="'+this.value+'"]'));
+           }).trigger('change');
+  });
+</script>
+
+
+</head>
+<body>
+<form action="sub" method="POST">{% csrf_token %}
+<table>
+    <tr><td>
+        Name: <input type="text" name="name">
+    </td></tr>
+<tr>
+    <td>
+DISTRICT:
+<select name="district" id="select1" style="width:300px;">
+  <option selected disabled="true">--Select district</option>
+  {% for districts in District %}
+  <option value="{{districts.did}}">{{districts.districtname}}</option>
+  {% endfor %}
+</select>
+
+PINCODE:
+<select name="pincode" id="select2" style="width:300px;">
+  <option selected disabled="true"></option>
+  {% for pincodes in Pincode %}
+  <option value="{{pincodes.did}}">{{pincodes.pincodeno}}</option>
+  {% endfor %}
+</select>
+    </td>
+</tr>
+    <tr>
+        <td>
+            <button type="submit" id="btnSubmit">Submit</button>
+        </td>
+    </tr>
+</table>
+    {% if messages %}
+    {% for result in messages %}
+    <b style="color:green;">{{result}}</b>
+    {% endfor %}
+    {% endif %}
+</form>
+</body>
+</html>
